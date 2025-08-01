@@ -6,7 +6,7 @@ import UserSignupService from "../services/signupService.js";
 export async function handler(
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
-  const { email, password } = event.body ? JSON.parse(event.body) : {};
+  const { email, password , groupName} = event.body ? JSON.parse(event.body) : {};
 
   if (!email || !password) {
     return {
@@ -19,7 +19,7 @@ export async function handler(
   }
 
   try {
-    const newUser = await UserSignupService(email, password);
+    const newUser = await UserSignupService(email, password, groupName);
 
     return {
       statusCode: 201,
