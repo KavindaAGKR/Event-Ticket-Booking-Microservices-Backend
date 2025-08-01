@@ -15,3 +15,4 @@ coverage/
 *.pid.lock
 .npm
 .eslintcache
+.aws-sam
