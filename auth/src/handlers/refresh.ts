@@ -1,14 +1,6 @@
-
-
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 import refreshService from "../services/refresh.js";
 
-/**
- * Lambda handler function to refresh access and ID tokens.
- * @param event - The event containing the request data.
- * @returns The result of the API Gateway proxy integration.
- * @async
- */
 export async function handler(
   event: APIGatewayProxyEventV2
 ): Promise<APIGatewayProxyResultV2> {

@@ -1,21 +1,6 @@
-/**
- * @file Lambda function for user login.
- * @description Authenticates a user and provides JWT tokens.
- * This file was created on 2024-10-30, last updated on 2024-12-03.
- * @copyright Builtapps Business Solutions 2024
- * @author Thusitha <thusitha.builtapps@gmail.com>
- * @version 1.0.0
- */
-
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 import userLoginService from "../services/loginService";
 
-/**
- * Lambda handler function for user login.
- * @param event - The event containing the request data.
- * @returns The result of the API Gateway proxy integration.
- * @async
- */
 export async function handler(
   event: APIGatewayProxyEventV2
 ): Promise<APIGatewayProxyResultV2> {

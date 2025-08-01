@@ -1,16 +1,10 @@
-
 import {
   CognitoIdentityProviderClient,
   SignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import crypto from 'crypto';
 
-/**
- * Service function to handle user signup in the Cognito user pool.
- * @param email - The email address of the user signing up.
- * @param password - The password for the user account.
- * @returns - A promise that resolves to the Cognito signup response object.
- */
+
 async function UserSignupService(
   email: string,
   password: string,
