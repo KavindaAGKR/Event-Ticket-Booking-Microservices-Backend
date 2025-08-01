@@ -5,7 +5,7 @@ Description: Auth service for the Ticket Booking System
 Globals:
   Function:
     Timeout: 10
-    MemorySize: 128
+    MemorySize: 512
     Runtime: nodejs20.x
     Architectures:
       - x86_64
@@ -75,6 +75,13 @@ Resources:
             PayloadFormatVersion: '2.0'
             Path: /auth/signup
             Method: post
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - cognito-idp:AdminAddUserToGroup
+              Resource: arn:aws:cognito-idp:ap-southeast-1:859793947578:userpool/ap-southeast-1_URyquR1PH
     Metadata:
       Fn::Transform:
         Name: 'AWS::Include'
