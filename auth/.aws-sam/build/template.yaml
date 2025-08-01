@@ -1,0 +1,143 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Auth service for the Ticket Booking System
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 128
+    Runtime: nodejs20.x
+    Architectures:
+    - x86_64
+    CodeUri: .
+    Environment:
+      Variables:
+        COGNITO_USER_POOL_ID: ap-southeast-1_URyquR1PH
+        COGNITO_APP_CLIENT_ID: 5kto9jo7b5oom9gheovtnvc8be
+        COGNITO_APP_CLIENT_SECRET: iqfsi4jn15sg2vh19uf7hbavigcbhlvk0s3gvrdb0im0a4bqm
+        COGNITO_REGION: ap-southeast-1
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+    - dev
+    - test
+    - prod
+    Description: Environment name
+Resources:
+  HTTPApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: Prod
+      CorsConfiguration:
+        AllowMethods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+        AllowHeaders:
+        - Content-Type
+        - Authorization
+        - Access-Control-Allow-Origin
+        AllowOrigins:
+        - http://localhost:3000
+        - https://localhost:3000
+        AllowCredentials: true
+  HelloFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: hello.default
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HTTPApi
+            PayloadFormatVersion: '2.0'
+            Path: /auth/hello
+            Method: get
+      CodeUri: HelloFunction
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: false
+        External:
+        - '@aws-sdk/*'
+        - '@smithy/*'
+  SignupFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: signup.default
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HTTPApi
+            PayloadFormatVersion: '2.0'
+            Path: /auth/signup
+            Method: post
+      CodeUri: SignupFunction
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: false
+        External:
+        - '@aws-sdk/*'
+        - '@smithy/*'
+  EmailVerificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: email-verification.default
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HTTPApi
+            PayloadFormatVersion: '2.0'
+            Path: /auth/verify-email
+            Method: post
+      CodeUri: EmailVerificationFunction
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: false
+        External:
+        - '@aws-sdk/*'
+        - '@smithy/*'
+  LoginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: login.default
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HTTPApi
+            PayloadFormatVersion: '2.0'
+            Path: /auth/login
+            Method: post
+      CodeUri: LoginFunction
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: false
+        External:
+        - '@aws-sdk/*'
+        - '@smithy/*'
+Outputs:
+  HttpApiEndpoint:
+    Description: HTTP API Endpoint URL
+    Value:
+      Fn::Sub: https://${HTTPApi}.execute-api.${AWS::Region}.amazonaws.com/Prod

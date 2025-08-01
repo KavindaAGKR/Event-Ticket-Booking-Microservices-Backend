@@ -1,0 +1,29 @@
+{
+  "name": "auth",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "sam build --profile default && sam local start-api --profile default",
+    "sam:deploy": "sam build && sam deploy",
+    "sam:deploy:prod": "sam build && sam deploy --config-file samconfig.toml --stack-name auth-service-prod"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Authentication service for ticket booking system",
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "aws-sdk-mock": "^6.2.1",
+    "serverless-offline": "^14.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.687.0",
+    "@types/aws-lambda": "^8.10.152",
+    "aws-jwt-verify": "^4.0.0",
+    "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1692.0"
+  }
+}
