@@ -1,9 +1,11 @@
 import { Router } from 'express';
-import { createEventHandler } from '../controllers/eventController';
+import { createEvent, getAllEvents, getEventById } from '../controllers/eventController';
 import { validateAuth } from '../middlewares/authMiddleware';
 
 const router = Router();
 
-router.post('/events', validateAuth, createEventHandler);
+router.post('/create', validateAuth, createEvent);
+router.get('/get-all-events', validateAuth, getAllEvents);
+router.get('/:id', validateAuth, getEventById);
 
 export default router;

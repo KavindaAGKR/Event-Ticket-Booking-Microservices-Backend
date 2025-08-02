@@ -7,8 +7,8 @@
     "start": "nodemon src/index.ts",
     "dev": "nodemon src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prisma": "prisma",
-    "migrate": "prisma migrate dev --name init && prisma generate"
+    "prisma": "prisma migrate dev --name init && prisma generate",
+    "prisma:reset": "prisma migrate reset && prisma migrate dev --name init && prisma generate"
   },
   "author": "Kavinda Aludeniya",
   "license": "ISC",
@@ -23,6 +23,8 @@
   "dependencies": {
     "@prisma/client": "^6.13.0",
     "dotenv": "^17.2.1",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.2.0"
   }
 }

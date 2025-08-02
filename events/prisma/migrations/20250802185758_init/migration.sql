@@ -13,7 +13,7 @@ CREATE TABLE "public"."Event" (
     "category" TEXT NOT NULL,
     "imageUrl" TEXT,
     "status" TEXT NOT NULL DEFAULT 'DRAFT',
-    "organizerId" INTEGER NOT NULL,
+    "organizerId" TEXT NOT NULL,
     "organizerName" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

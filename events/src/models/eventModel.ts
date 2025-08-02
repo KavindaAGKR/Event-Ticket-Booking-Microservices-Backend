@@ -1,4 +1,4 @@
-// File: src/models/event.model.ts
+
 export enum EventStatus {
   DRAFT = 'DRAFT',
   PUBLISHED = 'PUBLISHED',

@@ -17,7 +17,7 @@ datasource db {
 
 model Event {
   id            Int         @id @default(autoincrement())
-  name          String
+  name          String      @unique
   description   String
   location      String
   venue         String
@@ -29,7 +29,7 @@ model Event {
   category      String
   imageUrl      String? 
   status        String   @default("DRAFT")
-  organizerId   Int
+  organizerId   String
   organizerName String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
