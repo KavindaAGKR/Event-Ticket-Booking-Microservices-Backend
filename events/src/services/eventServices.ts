@@ -1,5 +1,12 @@
 import prisma from "../config/database";
-import { EventStatus } from "../models/eventModel";
+
+
+export enum EventStatus {
+  DRAFT = 'DRAFT',
+  PUBLISHED = 'PUBLISHED',
+  CANCELLED = 'CANCELLED',
+}
+
 
 // Create an event service
 export const createEventService = async (data: any, organizerId: string) => {
