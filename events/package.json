@@ -1,0 +1,28 @@
+{
+  "name": "event-service",
+  "version": "1.0.0",
+  "description": "event service",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma": "prisma",
+    "migrate": "prisma migrate dev --name init && prisma generate"
+  },
+  "author": "Kavinda Aludeniya",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.1.0",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.13.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.13.0",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0"
+  }
+}
