@@ -5,6 +5,7 @@ import {
   getAllBookingsService,
   getBookingByIdService,
 } from "../services/bookingServices";
+import { publishBookingCreated } from "../rabbitMQ/publisher";
 
 //Create a booking
 export const createBooking = async (req: Request, res: Response) => {
@@ -12,6 +13,11 @@ export const createBooking = async (req: Request, res: Response) => {
     const bookingData = req.body;
     const userName = req.username;
     const response = await createBookingService(bookingData, userName);
+
+    // Publish booking created event
+    await publishBookingCreated({
+      booking: response
+    });
 
     res.status(201).json({
       status: "SUCCESS",
@@ -48,35 +54,33 @@ export const getBookingById = async (req: Request, res: Response) => {
         .status(404)
         .json({ status: "FAILED", message: "Booking not found" });
     }
-    res
-      .status(200)
-      .json({
-        status: "SUCCESS",
-        message: "Booking retrieved successfully",
-        data: booking,
-      });
+    res.status(200).json({
+      status: "SUCCESS",
+      message: "Booking retrieved successfully",
+      data: booking,
+    });
   } catch (err) {
     res.status(500).json({ status: "FAILED", message: err.message });
   }
 };
 
-
 //cancel booking
 export const cancelBooking = async (req: Request, res: Response) => {
-  try{
+  try {
     const bookingId = parseInt(req.params.id, 10);
     const response = await cancelBookingService(bookingId);
     if (!response) {
-      return res
-        .status(404)
-        .json({ status: "FAILED", message: "Booking not found or already cancelled" });
+      return res.status(404).json({
+        status: "FAILED",
+        message: "Booking not found or already cancelled",
+      });
     }
     res.status(200).json({
       status: "SUCCESS",
       message: "Booking cancelled successfully",
       data: response,
     });
-  }catch (err) {
+  } catch (err) {
     res.status(500).json({ status: "FAILED", message: err.message });
   }
-}
+};
