@@ -16,7 +16,7 @@ export const createEventService = async (data: any, organizerId: string) => {
         ...data,
         organizerId: organizerId,
         soldTickets: 0,
-        status: EventStatus.DRAFT,
+        status: EventStatus.PUBLISHED,
       },
     });
   } catch (error: any) {

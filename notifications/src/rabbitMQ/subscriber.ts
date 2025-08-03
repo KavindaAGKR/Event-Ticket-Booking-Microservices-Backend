@@ -12,9 +12,9 @@ export async function startEventCreatedSubscriber() {
       const eventData = JSON.parse(msg.content.toString());
       console.log("Received event_created:", eventData);
 
-      const template = eventCreatedTemplate(eventData);
+      const template = eventCreatedTemplate(eventData.event);
       await sendEmailNotification(
-        eventData.creatorEmail,
+        eventData.event.organizerEmail,
         template.subject,
         template.html
       );

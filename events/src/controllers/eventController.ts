@@ -4,7 +4,7 @@ import {
   getAllEventsService,
   getEventByIdService,
 } from "../services/eventServices";
-import { publishEventCreated } from "../rabbitmq/publisher";
+import { publishEventCreated } from "../rabbitMQ/publisher";
 
 //Create an event
 export const createEvent = async (req: Request, res: Response) => {
@@ -18,11 +18,9 @@ export const createEvent = async (req: Request, res: Response) => {
 
     const event = await createEventService(req.body, req.username);
 
-    // Publish event to RabbitMQ
+// Publish event to RabbitMQ
     await publishEventCreated({
-      eventId: event.id,
-      title: event.name,
-      creatorEmail: "bimlpirsad66@gmail.com",
+      event: event,
     });
 
     res.status(201).json({

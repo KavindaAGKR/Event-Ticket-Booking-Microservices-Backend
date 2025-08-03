@@ -4,7 +4,7 @@
   "description": "event service",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.ts",
+    "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prisma": "prisma migrate dev --name init && prisma generate",

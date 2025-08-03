@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-dotenv.config();
-
 import { startEventCreatedSubscriber } from "./src/rabbitmq/subscriber";
+
+dotenv.config();
 
 startEventCreatedSubscriber().catch(console.error);

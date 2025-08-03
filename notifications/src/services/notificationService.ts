@@ -16,7 +16,7 @@ export async function sendEmailNotification(
   });
 
   await transporter.sendMail({
-    from: `"Event App" <${process.env.NODEMAIL}>`,
+    from: `"MyEvents.lk" <${process.env.NODEMAIL}>`,
     to,
     subject,
     html,
