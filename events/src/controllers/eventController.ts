@@ -5,7 +5,6 @@ import {
   getEventByIdService,
 } from "../services/eventServices";
 
-
 //Create an event
 export const createEvent = async (req: Request, res: Response) => {
   try {
@@ -17,7 +16,11 @@ export const createEvent = async (req: Request, res: Response) => {
     }
 
     const event = await createEventService(req.body, req.username);
-    res.status(201).json(event);
+    res.status(201).json({
+      status: "SUCCESS",
+      message: "Event created successfully",
+      data: event,
+    });
   } catch (err: any) {
     res.status(400).json({ status: "FAILED", message: err.message });
   }
@@ -27,7 +30,13 @@ export const createEvent = async (req: Request, res: Response) => {
 export const getAllEvents = async (req: Request, res: Response) => {
   try {
     const events = await getAllEventsService();
-    res.status(200).json({ status: "SUCCESS", data: events });
+    res
+      .status(200)
+      .json({
+        status: "SUCCESS",
+        message: "Events retrieved successfully",
+        data: events,
+      });
   } catch (err: any) {
     res.status(400).json({ status: "FAILED", message: err.message });
   }
@@ -43,7 +52,11 @@ export const getEventById = async (req: Request, res: Response) => {
         .status(404)
         .json({ status: "FAILED", message: "Event not found" });
     }
-    res.status(200).json({ status: "SUCCESS", data: event });
+    res.status(200).json({
+      status: "SUCCESS",
+      message: "Event retrieved successfully",
+      data: event,
+    });
   } catch (err: any) {
     res.status(400).json({ status: "FAILED", message: err.message });
   }

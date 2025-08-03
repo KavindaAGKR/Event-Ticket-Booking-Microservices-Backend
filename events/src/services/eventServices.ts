@@ -18,11 +18,8 @@ export const createEventService = async (data: any, organizerId: string) => {
         organizerId: organizerId,
         soldTickets: 0,
         status: EventStatus.DRAFT,
-        createdAt: now,
-        updatedAt: now,
       },
     });
-
 };
 
 // Get all events service
