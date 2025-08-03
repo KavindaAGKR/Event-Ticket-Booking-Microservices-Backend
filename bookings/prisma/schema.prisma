@@ -1,0 +1,36 @@
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Booking {
+  id            Int      @id @default(autoincrement())
+  bookingRef    String   @unique @default(uuid())
+  eventId       Int      
+  eventName     String   
+  eventPrice    Float    
+  customerId    String   
+  customerName  String?
+  customerEmail String
+  numberOfTickets Int
+  totalAmount   Float
+  status        String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED, REFUNDED
+  paymentStatus String   @default("PENDING") // PENDING, COMPLETED, FAILED, REFUNDED
+  paymentMethod String?  
+  paymentId     String?  
+  bookingDate   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([customerId])
+  @@index([eventId])
+  @@index([bookingRef])
+  @@index([status])
+}
