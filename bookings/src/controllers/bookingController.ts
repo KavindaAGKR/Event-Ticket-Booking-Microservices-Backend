@@ -7,6 +7,8 @@ import {
 } from "../services/bookingServices";
 import { publishBookingCreated } from "../rabbitMQ/publisher";
 
+export const pendingResponses = new Map<number, Response>();
+
 //Create a booking
 export const createBooking = async (req: Request, res: Response) => {
   try {
@@ -14,16 +16,15 @@ export const createBooking = async (req: Request, res: Response) => {
     const userName = req.username;
     const response = await createBookingService(bookingData, userName);
 
+    // Store response for later
+    pendingResponses.set(bookingData.id, res);
+
     // Publish booking created event
     await publishBookingCreated({
-      booking: response
+      booking: response,
+      cardDetails: bookingData.cardDetails,
     });
 
-    res.status(201).json({
-      status: "SUCCESS",
-      message: "Booking created successfully",
-      data: response,
-    });
   } catch (err) {
     res.status(500).json({ status: "FAILED", message: err.message });
   }

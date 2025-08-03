@@ -11,7 +11,7 @@ export async function startBookingCreatedSubscriber() {
       const bookingData = JSON.parse(msg.content.toString());
       console.log("Received booking_created:", bookingData);
       try {
-        await processPayment(bookingData.booking);
+        await processPayment(bookingData);
         channel.ack(msg);
       } catch (err) {
         channel.nack(msg, false, false);

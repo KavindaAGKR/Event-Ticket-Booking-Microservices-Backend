@@ -1,10 +1,12 @@
 import { publishPaymentResult } from "../rabbitMQ/publisher";
 import prisma from "../config/database";
 
-export async function processPayment(booking: any) {
-  // Simulate payment logic
-  const paymentSuccess = Math.random() > 0.2; // 80% success rate
+export async function processPayment(bookingdata: any) {
+  const { booking, cardDetails } = bookingdata;
+  // Card details process using cardDetails object
+  const paymentSuccess = Math.random() > 0.2; // random success/fail response for demo purposes
   console.log("Processing payment for booking:", booking.id);
+
   // Save payment record in DB
   const paymentData = {
     customerId: booking.customerId,
@@ -25,7 +27,10 @@ export async function processPayment(booking: any) {
   }
   console.log("Payment processed:", response);
 
-  await publishPaymentResult({ booking: booking, paymentStatus: paymentData.status });
+  await publishPaymentResult({
+    booking: booking,
+    paymentStatus: paymentData.status,
+  });
   if (paymentSuccess) {
     console.log("Payment successful for booking", booking.id);
   } else {

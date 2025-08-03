@@ -3,7 +3,7 @@ import { sendEmailNotification } from "../services/notificationService";
 import { eventCreatedTemplate } from "../templates/email-templates/eventCreatedTemplate";
 
 export async function startEventCreatedSubscriber() {
-  const channel = await getRabbitMQChannel();
+  const {channel} = await getRabbitMQChannel();
   const queue = "event_created";
   await channel.assertQueue(queue, { durable: true });
 
