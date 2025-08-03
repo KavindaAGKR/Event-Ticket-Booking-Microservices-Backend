@@ -4,6 +4,7 @@ import {
   getAllEventsService,
   getEventByIdService,
 } from "../services/eventServices";
+import { publishEventCreated } from "../rabbitMQ/publisher";
 
 //Create an event
 export const createEvent = async (req: Request, res: Response) => {
@@ -16,6 +17,12 @@ export const createEvent = async (req: Request, res: Response) => {
     }
 
     const event = await createEventService(req.body, req.username);
+
+// Publish event to RabbitMQ
+    await publishEventCreated({
+      event: event,
+    });
+
     res.status(201).json({
       status: "SUCCESS",
       message: "Event created successfully",
@@ -30,13 +37,11 @@ export const createEvent = async (req: Request, res: Response) => {
 export const getAllEvents = async (req: Request, res: Response) => {
   try {
     const events = await getAllEventsService();
-    res
-      .status(200)
-      .json({
-        status: "SUCCESS",
-        message: "Events retrieved successfully",
-        data: events,
-      });
+    res.status(200).json({
+      status: "SUCCESS",
+      message: "Events retrieved successfully",
+      data: events,
+    });
   } catch (err: any) {
     res.status(400).json({ status: "FAILED", message: err.message });
   }
