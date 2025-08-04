@@ -8,6 +8,6 @@
     "outDir": "dist",
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "index.ts"],
   "lib": ["es2015"]
 }

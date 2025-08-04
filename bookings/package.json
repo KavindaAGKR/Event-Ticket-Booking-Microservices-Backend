@@ -4,8 +4,8 @@
   "description": "booking service",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "dev": "nodemon src/index.ts",
+    "start": "ts-node index.ts",
+    "dev": "nodemon index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prisma": "prisma migrate dev --name init && prisma generate",
     "prisma:reset": "prisma migrate reset && prisma migrate dev --name init && prisma generate"
