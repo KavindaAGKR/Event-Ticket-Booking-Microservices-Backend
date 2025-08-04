@@ -47,3 +47,18 @@ export const getEventByIdService = async (id: number) => {
     },
   });
 };
+
+export const updateEventTickets = async (booking) => {
+  const { eventId, numberOfTickets } = booking;
+
+  return await prisma.event.update({
+    where: {
+      id: eventId,
+    },
+    data: {
+      soldTickets: {
+        increment: numberOfTickets,
+      },
+    },
+  });
+};

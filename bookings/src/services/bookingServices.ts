@@ -1,6 +1,5 @@
 import prisma from "../config/database";
 
-
 // Create a booking service
 export const createBookingService = async (
   bookingData: any,
@@ -20,8 +19,19 @@ export const createBookingService = async (
       paymentStatus: bookingData.paymentStatus || "PENDING",
       paymentMethod: bookingData.paymentMethod,
       paymentId: bookingData.paymentId,
-      bookingDate: bookingData.bookingDate
+      bookingDate: bookingData.bookingDate,
     },
+  });
+};
+
+export const updateBookingPaymentStatus = async (bookingData) => {
+  
+
+  await prisma.booking.update({
+    where: {
+      id: bookingData.id,
+    },
+    data: bookingData,
   });
 };
 
@@ -29,12 +39,12 @@ export const createBookingService = async (
 export const getAllBookingsService = async (customerId: string) => {
   return await prisma.booking.findMany({
     where: {
-      customerId: customerId
-    }
+      customerId: customerId,
+    },
   });
-}
+};
 
-// Get booking by ID service 
+// Get booking by ID service
 export const getBookingByIdService = async (bookingId: number) => {
   return await prisma.booking.findUnique({
     where: {
@@ -42,7 +52,6 @@ export const getBookingByIdService = async (bookingId: number) => {
     },
   });
 };
-
 
 // Cancel booking service
 export const cancelBookingService = async (bookingId: number) => {

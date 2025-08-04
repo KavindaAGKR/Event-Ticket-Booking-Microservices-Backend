@@ -1,31 +1,27 @@
 {
-  "name": "event-service",
+  "name": "payments-service",
   "version": "1.0.0",
-  "description": "event service",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node index.ts",
     "dev": "nodemon index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/index.js",
     "prisma": "prisma migrate dev --name init && prisma generate",
     "prisma:reset": "prisma migrate reset && prisma migrate dev --name init && prisma generate"
   },
-  "author": "Kavinda Aludeniya",
-  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.13.0",
+    "amqplib": "^0.10.8",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0"
+  },
   "devDependencies": {
+    "@types/amqplib": "^0.10.7",
     "@types/express": "^5.0.3",
     "@types/node": "^24.1.0",
     "nodemon": "^3.1.10",
     "prisma": "^6.13.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
-  },
-  "dependencies": {
-    "@prisma/client": "^6.13.0",
-    "amqplib": "^0.10.8",
-    "dotenv": "^17.2.1",
-    "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "jwks-rsa": "^3.2.0"
   }
 }
