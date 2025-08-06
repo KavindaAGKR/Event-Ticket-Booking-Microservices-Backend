@@ -5,11 +5,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon index.ts",
-    "sam:build": "tsc",
-    "sam:start": "sam build --profile default && sam local start-api --profile default",
-    "sam:deploy": "sam build && sam deploy",
-    "sam:deploy:prod": "sam build && sam deploy --config-file samconfig.toml --stack-name auth-service-prod"
+    "dev": "nodemon index.ts"
   },
   "keywords": [],
   "author": "",
