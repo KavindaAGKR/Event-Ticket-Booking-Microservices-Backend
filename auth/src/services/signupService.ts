@@ -4,15 +4,12 @@ import {
   SignUpCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import crypto from "crypto";
-import AWS from "aws-sdk";
 
 async function UserSignupService(
   email: string,
   password: string,
   groupName?: string
 ): Promise<object> {
-  const cognito = new AWS.CognitoIdentityServiceProvider();
-
   const appClientId = process.env.COGNITO_APP_CLIENT_ID;
   const appClientSecret = process.env.COGNITO_APP_CLIENT_SECRET;
   const cognitoRegion = process.env.COGNITO_REGION;
@@ -32,8 +29,6 @@ async function UserSignupService(
       .digest("base64");
   };
 
-
-
   const command = new SignUpCommand({
     ClientId: appClientId,
     Username: email,
@@ -46,12 +41,12 @@ async function UserSignupService(
     groupName = "user";
   }
   try {
-      const cmd = new AdminAddUserToGroupCommand({
-    UserPoolId: userPoolId!,
-    Username: email,
-    GroupName: groupName,
-  });
-  
+    const cmd = new AdminAddUserToGroupCommand({
+      UserPoolId: userPoolId!,
+      Username: email,
+      GroupName: groupName,
+    });
+
     await cognitoClient.send(cmd);
   } catch (error) {
     throw new Error(`Error adding user to group: ${error}`);
