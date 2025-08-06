@@ -17,14 +17,17 @@ export const createBooking = async (req: Request, res: Response) => {
     const response = await createBookingService(bookingData, userName);
 
     // Store response for later
-    pendingResponses.set(bookingData.id, res);
-
+    pendingResponses.set(response.id, res);
+    const newBookingData = {
+      ...response,
+      cardDetails: bookingData.cardDetails,
+      customerId: userName,
+    };
+    console.log("New booking created:", newBookingData);
     // Publish booking created event
     await publishBookingCreated({
-      booking: response,
-      cardDetails: bookingData.cardDetails,
+      newBookingData,
     });
-
   } catch (err) {
     res.status(500).json({ status: "FAILED", message: err.message });
   }

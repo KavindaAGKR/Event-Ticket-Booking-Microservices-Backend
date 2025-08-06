@@ -4,16 +4,18 @@
   "description": "event service",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "start": "node dist/index.js",
     "dev": "nodemon index.ts",
-    "build": "tsc",
-    "test": "jest --passWithNoTests",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate deploy",
+    "test": "echo \"No tests yet\" && exit 0",
+    "docker:build": "docker build -t event-service .",
+    "docker:run": "docker run -p 3002:3002 event-service",
     "prisma": "prisma migrate dev --name init && prisma generate",
-    "prisma:reset": "prisma migrate reset && prisma migrate dev --name init && prisma generate"
-
-  },
+    "prisma:reset": "prisma migrate reset && prisma migrate dev --name init && prisma generate",
+    "prisma:generate": "npx prisma generate",
+    "prisma:deploy": "npx prisma migrate deploy",
+    "start:prod": "npm run prisma:generate && npm run prisma:deploy && npm start"
+    },
   "author": "Kavinda Aludeniya",
   "license": "ISC",
   "devDependencies": {

@@ -64,6 +64,12 @@ export const login = async (req: Request, res: Response) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
+    //This is for testing
+    // Publish event to RabbitMQ
+    await publishUserSignup({
+      email: email
+      
+    });
     res.status(200).json({
       status: "SUCCESS",
       message: "Login successful.",

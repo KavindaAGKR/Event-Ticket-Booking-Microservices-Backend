@@ -3,17 +3,25 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "nodemon index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
+    "dev": "nodemon index.ts",
+    "test": "echo \"No tests yet\" && exit 0",
+    "docker:build": "docker build -t payments-service .",
+    "docker:run": "docker run -p 3004:3004 payments-service",
     "prisma": "prisma migrate dev --name init && prisma generate",
-    "prisma:reset": "prisma migrate reset && prisma migrate dev --name init && prisma generate"
+    "prisma:reset": "prisma migrate reset && prisma migrate dev --name init && prisma generate",
+    "prisma:generate": "npx prisma generate",
+    "prisma:deploy": "npx prisma migrate deploy",
+    "start:prod": "npm run prisma:generate && npm run prisma:deploy && npm start"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",
     "amqplib": "^0.10.8",
     "dotenv": "^17.2.1",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.2.0"
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.7",

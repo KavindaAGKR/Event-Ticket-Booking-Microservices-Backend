@@ -18,21 +18,25 @@ export const createBookingService = async (
       status: bookingData.status || "PENDING",
       paymentStatus: bookingData.paymentStatus || "PENDING",
       paymentMethod: bookingData.paymentMethod,
-      paymentId: bookingData.paymentId,
       bookingDate: bookingData.bookingDate,
     },
   });
 };
 
 export const updateBookingPaymentStatus = async (bookingData) => {
-  
-
-  await prisma.booking.update({
-    where: {
-      id: bookingData.id,
-    },
-    data: bookingData,
-  });
+  try {
+    await prisma.booking.update({
+      where: {
+        id: bookingData.id,
+      },
+      data: bookingData,
+    });
+  } catch (error) {
+    throw new Error(
+      "Failed to update booking payment status: " + error.message
+    );
+    console.error("Error updating booking payment status:", error);
+  }
 };
 
 // Get all bookings service
