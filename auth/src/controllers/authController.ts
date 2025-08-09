@@ -19,7 +19,6 @@ export const signup = async (req: Request, res: Response) => {
 
     const newUser = await UserSignupService(email, password, groupName);
 
-
     res.status(201).json({
       status: "SUCCESS",
       message:
@@ -44,6 +43,10 @@ export const signup = async (req: Request, res: Response) => {
 // User login controller
 export const login = async (req: Request, res: Response) => {
   try {
+    // Add this debug line
+    console.log("Request body:", req.body);
+    console.log("Request headers:", req.headers);
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -67,8 +70,7 @@ export const login = async (req: Request, res: Response) => {
     //This is for testing
     // Publish event to RabbitMQ
     await publishUserSignup({
-      email: email
-      
+      email: email,
     });
     res.status(200).json({
       status: "SUCCESS",
@@ -135,8 +137,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
     await userVerifyEmailService(email, code);
     // Publish event to RabbitMQ
     await publishUserSignup({
-      email: email
-      
+      email: email,
     });
     res.status(200).json({
       status: "SUCCESS",

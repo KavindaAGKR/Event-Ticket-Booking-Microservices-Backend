@@ -29,6 +29,7 @@ export default async function userLoginService(
   });
 
   const response = await cognitoClient.send(command);
+  console.log("Cognito response:", response);
   return {
     idToken: response.AuthenticationResult?.IdToken ?? "",
     accessToken: response.AuthenticationResult?.AccessToken ?? "",

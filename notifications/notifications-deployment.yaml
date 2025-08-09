@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifications
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: notifications
+  template:
+    metadata:
+      labels:
+        app: notifications
+    spec:
+      containers:
+        - name: notifications
+          image: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/notifications:latest
+          ports:
+            - containerPort: 3003
+          envFrom:
+            - configMapRef:
+                name: notifications-config
+            - secretRef:
+                name: notifications-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notifications
+spec:
+  type: ClusterIP
+  selector:
+    app: notifications
+  ports:
+    - port: 3003
+      targetPort: 3003

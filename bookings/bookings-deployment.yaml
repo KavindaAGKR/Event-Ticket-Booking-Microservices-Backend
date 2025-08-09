@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookings
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bookings
+  template:
+    metadata:
+      labels:
+        app: bookings
+    spec:
+      containers:
+        - name: bookings
+          image: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/bookings:latest
+          ports:
+            - containerPort: 3001
+          envFrom:
+            - configMapRef:
+                name: bookings-config
+            - secretRef:
+                name: bookings-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookings
+spec:
+  type: ClusterIP
+  selector:
+    app: bookings
+  ports:
+    - port: 3001
+      targetPort: 3001

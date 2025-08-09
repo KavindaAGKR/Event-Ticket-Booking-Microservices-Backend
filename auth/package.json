@@ -16,22 +16,17 @@
   "license": "ISC",
   "description": "Authentication service for ticket booking system",
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.7",
     "@types/express": "^5.0.3",
     "@types/node": "^24.1.0",
-    "aws-sdk-mock": "^6.2.1",
     "nodemon": "^3.1.10",
-    "serverless-offline": "^14.4.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "ts-node": "^10.9.2"
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.687.0",
-    "@types/aws-lambda": "^8.10.152",
     "amqplib": "^0.10.8",
-    "aws-jwt-verify": "^4.0.0",
-    "cookie-parser": "^1.4.6",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.1",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "typescript": "^5.8.3"
   }
 }
