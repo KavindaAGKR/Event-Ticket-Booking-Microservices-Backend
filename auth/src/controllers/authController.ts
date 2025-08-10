@@ -8,16 +8,16 @@ import { publishUserSignup } from "../rabbitMQ/publisher";
 // User signup controller
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { email, password, groupName } = req.body;
+    const { email, password, groupName, name, phone } = req.body;
 
-    if (!email || !password) {
+    if (!email || !password || !name) {
       return res.status(400).json({
         status: "FAILED",
         message: "Please complete the required fields.",
       });
     }
 
-    const newUser = await UserSignupService(email, password, groupName);
+    const newUser = await UserSignupService(email, password, groupName, name, phone);
 
     res.status(201).json({
       status: "SUCCESS",
@@ -67,11 +67,6 @@ export const login = async (req: Request, res: Response) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    //This is for testing
-    // Publish event to RabbitMQ
-    await publishUserSignup({
-      email: email,
-    });
     res.status(200).json({
       status: "SUCCESS",
       message: "Login successful.",

@@ -2,11 +2,27 @@ import express from "express";
 import eventRoutes from "./src/routes/eventRoutes";
 import dotenv from "dotenv";
 import { startPaymentResultSubscriber } from "./src/rabbitMQ/paymentResultSubscriber";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
+
+// CORS configuration
+app.use(
+  cors({
+    origin: ["http://localhost:4000", "https://cloud.cisk.site"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+  })
+);
+
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
 app.use("/events", eventRoutes);
 
 const PORT = process.env.PORT || 3002;

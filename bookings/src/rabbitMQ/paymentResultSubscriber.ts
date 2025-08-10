@@ -43,7 +43,7 @@ export async function startPaymentResultSubscriber() {
         ...booking,
         paymentStatus: paymentStatus,
         paymentId: booking.paymentId,
-        status: paymentStatus === "SUCCESS" ? "CONFIRMED" : "FAILED",
+        status: paymentStatus === "success" ? "CONFIRMED" : "FAILED",
       };
       updateBookingPaymentStatus(paymentData.booking);
       handleBookingResponse(paymentData);
