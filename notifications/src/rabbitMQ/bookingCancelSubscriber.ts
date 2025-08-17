@@ -1,11 +1,11 @@
 import { getRabbitMQChannel } from "../config/rabbitMQ";
 import { sendEmailNotification } from "../services/notificationService";
-import { paymentResultTemplate } from "../templates/email-templates/paymentResultTemplate";
+import { bookingCancelledTemplate } from "../templates/email-templates/bookingCancelledTemplate";
 
-export async function startPaymentResultSubscriber() {
+export async function startBookingCancelledSubscriber() {
   const { channel } = await getRabbitMQChannel();
-  const exchangeName = "payment_result_exchange";
-  const queueName = "notifications_payment_result"; // Unique queue for notifications service
+  const exchangeName = "booking_cancelled_exchange";
+  const queueName = "notifications_booking_cancelled";
 
   await channel.assertExchange(exchangeName, "fanout", { durable: true });
   await channel.assertQueue(queueName, { durable: true });
@@ -13,12 +13,12 @@ export async function startPaymentResultSubscriber() {
 
   channel.consume(queueName, async (msg) => {
     if (msg !== null) {
-      const paymentData = JSON.parse(msg.content.toString());
-      console.log("Received payment_result:", paymentData);
+      const bookingData = JSON.parse(msg.content.toString());
+      console.log("Received booking_cancelled:", bookingData);
 
-      const template = paymentResultTemplate(paymentData);
+      const template = bookingCancelledTemplate(bookingData);
       await sendEmailNotification(
-        paymentData.booking.customerEmail,
+        bookingData.booking.customerEmail,
         template.subject,
         template.html
       );
@@ -31,4 +31,3 @@ export async function startPaymentResultSubscriber() {
     `Listening for messages on RabbitMQ exchange: ${exchangeName}, queue: ${queueName}`
   );
 }
-

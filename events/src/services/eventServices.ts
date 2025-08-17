@@ -43,7 +43,7 @@ export const getAllEventsService = async () => {
 export const getEventByIdService = async (id: number) => {
   return prisma.event.findUnique({
     where: {
-      id: id,
+      id,
     },
   });
 };
@@ -61,4 +61,58 @@ export const updateEventTickets = async (booking) => {
       },
     },
   });
+};
+
+export const decreaseSoldTickets = async (booking) => {
+  const { eventId, numberOfTickets } = booking;
+
+  return await prisma.event.update({
+    where: {
+      id: eventId,
+    },
+    data: {
+      soldTickets: {
+        decrement: numberOfTickets,
+      },
+    },
+  });
+};
+
+//get organizer's events
+export const getAllOrganizerEventsService = async (organizerId: string) => {
+  return prisma.event.findMany({
+    where: {
+      organizerId: organizerId,
+    },
+  });
+};
+
+
+//Update event
+export const updateEventService = async (id: number, data: any) => {
+  try {
+    return await prisma.event.update({
+      where: {
+        id,
+      },
+      data,
+    });
+  } catch (error: any) {
+    
+    throw error;
+  }
+};
+
+
+//delete event service
+export const deleteEventService = async (id: number) => {
+  try {
+    await prisma.event.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (error: any) {
+    throw error;
+  }
 };

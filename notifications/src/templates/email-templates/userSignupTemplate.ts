@@ -11,14 +11,14 @@ export function userSignupTemplate(userData: UserSignupData | string) {
   const displayName = firstName || email.split("@")[0];
 
   return {
-    subject: `🎉 Welcome to EventBooker - Your Account is Ready!`,
+    subject: `🎉 Welcome to myEvents.lk - Your Account is Ready!`,
     html: `
       <!DOCTYPE html>
       <html lang="en">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Welcome to EventBooker</title>
+                        <title>Welcome to myEvents.lk</title>
       </head>
       <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f7fa;">
         <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f7fa; padding: 20px 0;">
@@ -30,10 +30,10 @@ export function userSignupTemplate(userData: UserSignupData | string) {
                 <tr>
                   <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center;">
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                      🎭 EventBooker
+                      🎭 myEvents.lk
                     </h1>
                     <p style="color: #e8f0ff; margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">
-                      Your Gateway to Amazing Events
+                      Sri Lanka's Premier Event Platform
                     </p>
                   </td>
                 </tr>

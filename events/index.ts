@@ -3,6 +3,7 @@ import eventRoutes from "./src/routes/eventRoutes";
 import dotenv from "dotenv";
 import { startPaymentResultSubscriber } from "./src/rabbitMQ/paymentResultSubscriber";
 import cors from "cors";
+import { startBookingCancelledSubscriber } from "./src/rabbitMQ/bookingCancelSubscriber";
 
 dotenv.config();
 
@@ -29,3 +30,4 @@ const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 startPaymentResultSubscriber();
+startBookingCancelledSubscriber();
