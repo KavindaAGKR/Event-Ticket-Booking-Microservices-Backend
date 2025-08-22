@@ -11,4 +11,4 @@ phases:
   build:
     commands:
       - echo Deploying notifications service to EKS...
-      - kubectl apply -f notifications-deployment.yaml
+      - kubectl apply -f notifications/notifications-deployment.yaml
