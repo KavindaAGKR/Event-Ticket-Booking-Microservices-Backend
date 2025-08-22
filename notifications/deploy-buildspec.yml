@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Setting up kubectl...
+      - curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+      - chmod +x ./kubectl
+      - mv ./kubectl /usr/local/bin/kubectl
+      - aws eks update-kubeconfig --region ap-southeast-1 --name my-cluster
+  build:
+    commands:
+      - echo Deploying notifications service to EKS...
+      - kubectl apply -f notifications-configmap.yaml
+      - kubectl apply -f notifications-secret.yaml
+      - kubectl apply -f notifications-deployment.yaml
