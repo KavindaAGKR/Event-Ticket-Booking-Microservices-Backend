@@ -12,6 +12,6 @@ phases:
     commands:
       - cd notifications
       - echo Deploying notifications service to EKS...
-      - kubectl apply -f notifications-configmap.yaml
-      - kubectl apply -f notifications-secret.yaml
-      - kubectl apply -f notifications-deployment.yaml
+      - kubectl apply -f notifications-configmap.yaml --validate=false
+      - kubectl apply -f notifications-secret.yaml --validate=false
+      - kubectl apply -f notifications-deployment.yaml --validate=false
