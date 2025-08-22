@@ -10,6 +10,5 @@ phases:
       - aws eks update-kubeconfig --region ap-southeast-1 --name my-cluster
   build:
     commands:
-      - cd notifications
       - echo Deploying notifications service to EKS...
       - kubectl apply -f notifications-deployment.yaml
