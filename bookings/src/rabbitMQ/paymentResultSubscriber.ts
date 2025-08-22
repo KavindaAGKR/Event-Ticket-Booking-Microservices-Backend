@@ -3,9 +3,9 @@ import { pendingResponses } from "../controllers/bookingController";
 import { updateBookingPaymentStatus } from "../services/bookingServices";
 
 const handleBookingResponse = (paymentResult) => {
-  const bookingId = paymentResult.bookingId;
+  const bookingId = paymentResult.booking.id;
   const res = pendingResponses.get(bookingId);
-  console.log("saved response = ", res);
+  //console.log("saved response = ", res);
   if (res) {
     if (paymentResult.paymentStatus === "success") {
       res.status(200).json({
@@ -43,7 +43,7 @@ export async function startPaymentResultSubscriber() {
         ...booking,
         paymentStatus: paymentStatus,
         paymentId: booking.paymentId,
-        status: paymentStatus === "SUCCESS" ? "CONFIRMED" : "FAILED",
+        status: paymentStatus === "success" ? "CONFIRMED" : "FAILED",
       };
       updateBookingPaymentStatus(paymentData.booking);
       handleBookingResponse(paymentData);

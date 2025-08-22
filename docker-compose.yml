@@ -1,0 +1,162 @@
+version: '3.8'
+
+services:
+  # RabbitMQ Message Broker
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password
+    networks:
+      - ticket-booking-network
+
+  # PostgreSQL Database for Events Service
+  events-db:
+    image: postgres:15
+    container_name: events-db
+    environment:
+      POSTGRES_DB: events
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - events-db-data:/var/lib/postgresql/data
+    networks:
+      - ticket-booking-network
+
+  # PostgreSQL Database for Bookings Service
+  bookings-db:
+    image: postgres:15
+    container_name: bookings-db
+    environment:
+      POSTGRES_DB: bookings
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+    volumes:
+      - bookings-db-data:/var/lib/postgresql/data
+    networks:
+      - ticket-booking-network
+
+  # PostgreSQL Database for Payments Service
+  payments-db:
+    image: postgres:15
+    container_name: payments-db
+    environment:
+      POSTGRES_DB: payments
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5435:5432"
+    volumes:
+      - payments-db-data:/var/lib/postgresql/data
+    networks:
+      - ticket-booking-network
+
+  # Auth Service
+  auth-service:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - RABBITMQ_URL=amqp://admin:password@rabbitmq:5672
+      # Add your AWS Cognito and other environment variables here
+    depends_on:
+      - rabbitmq
+    networks:
+      - ticket-booking-network
+    restart: unless-stopped
+
+  # Events Service
+  events-service:
+    build:
+      context: ./events
+      dockerfile: Dockerfile
+    container_name: events-service
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:password@events-db:5432/events
+      - RABBITMQ_URL=amqp://admin:password@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+      - events-db
+    networks:
+      - ticket-booking-network
+    restart: unless-stopped
+
+  # Bookings Service
+  bookings-service:
+    build:
+      context: ./bookings
+      dockerfile: Dockerfile
+    container_name: bookings-service
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:password@bookings-db:5432/bookings
+      - RABBITMQ_URL=amqp://admin:password@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+      - bookings-db
+    networks:
+      - ticket-booking-network
+    restart: unless-stopped
+
+  # Payments Service
+  payments-service:
+    build:
+      context: ./payments
+      dockerfile: Dockerfile
+    container_name: payments-service
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:password@payments-db:5432/payments
+      - RABBITMQ_URL=amqp://admin:password@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+      - payments-db
+    networks:
+      - ticket-booking-network
+    restart: unless-stopped
+
+  # Notifications Service
+  notifications-service:
+    build:
+      context: ./notifications
+      dockerfile: Dockerfile
+    container_name: notifications-service
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=production
+      - RABBITMQ_URL=amqp://admin:password@rabbitmq:5672
+      # Add your AWS SES credentials here
+    depends_on:
+      - rabbitmq
+    networks:
+      - ticket-booking-network
+    restart: unless-stopped
+
+volumes:
+  events-db-data:
+  bookings-db-data:
+  payments-db-data:
+
+networks:
+  ticket-booking-network:
+    driver: bridge

@@ -6,6 +6,7 @@ import {
   getBookingByIdService,
 } from "../services/bookingServices";
 import { publishBookingCreated } from "../rabbitMQ/publisher";
+import { publishBookingCancelled } from "../rabbitMQ/bookingCancelPublisher";
 
 export const pendingResponses = new Map<number, Response>();
 
@@ -17,14 +18,28 @@ export const createBooking = async (req: Request, res: Response) => {
     const response = await createBookingService(bookingData, userName);
 
     // Store response for later
-    pendingResponses.set(bookingData.id, res);
+    pendingResponses.set(response.id, res);
 
+    setTimeout(() => {
+      const pendingRes = pendingResponses.get(response.id);
+      if (pendingRes) {
+        pendingRes.status(408).json({
+          status: "FAILED",
+          message: "Payment response timed out",
+        });
+        pendingResponses.delete(response.id);
+      }
+    }, 8000);
+    const newBookingData = {
+      ...response,
+      cardDetails: bookingData.cardDetails,
+      customerId: userName,
+    };
+    console.log("New booking created:", newBookingData);
     // Publish booking created event
     await publishBookingCreated({
-      booking: response,
-      cardDetails: bookingData.cardDetails,
+      newBookingData,
     });
-
   } catch (err) {
     res.status(500).json({ status: "FAILED", message: err.message });
   }
@@ -69,6 +84,8 @@ export const getBookingById = async (req: Request, res: Response) => {
 export const cancelBooking = async (req: Request, res: Response) => {
   try {
     const bookingId = parseInt(req.params.id, 10);
+    const { booking } = req.body;
+    console.log("Cancelling booking with ID:", bookingId, "Data:", booking);
     const response = await cancelBookingService(bookingId);
     if (!response) {
       return res.status(404).json({
@@ -76,6 +93,8 @@ export const cancelBooking = async (req: Request, res: Response) => {
         message: "Booking not found or already cancelled",
       });
     }
+
+    await publishBookingCancelled({ booking });
     res.status(200).json({
       status: "SUCCESS",
       message: "Booking cancelled successfully",

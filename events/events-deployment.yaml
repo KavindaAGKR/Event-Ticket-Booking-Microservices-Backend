@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: events
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: events
+  template:
+    metadata:
+      labels:
+        app: events
+    spec:
+      containers:
+        - name: events
+          image: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/events:latest
+          ports:
+            - containerPort: 3002
+          envFrom:
+            - configMapRef:
+                name: events-config
+            - secretRef:
+                name: events-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: events
+spec:
+  type: ClusterIP
+  selector:
+    app: events
+  ports:
+    - port: 3002
+      targetPort: 3002

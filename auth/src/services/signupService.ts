@@ -8,7 +8,9 @@ import crypto from "crypto";
 async function UserSignupService(
   email: string,
   password: string,
-  groupName?: string
+  groupName?: string,
+  name?: string,
+  phone?: string
 ): Promise<object> {
   const appClientId = process.env.COGNITO_APP_CLIENT_ID;
   const appClientSecret = process.env.COGNITO_APP_CLIENT_SECRET;
@@ -33,6 +35,11 @@ async function UserSignupService(
     ClientId: appClientId,
     Username: email,
     Password: password,
+    UserAttributes: [
+      { Name: "email", Value: email },
+      { Name: "phone_number", Value: phone || "" },
+      { Name: "name", Value: name || "" },
+    ],
     SecretHash: appClientSecret ? calculateSecretHash(email) : undefined,
   });
   const response = await cognitoClient.send(command);

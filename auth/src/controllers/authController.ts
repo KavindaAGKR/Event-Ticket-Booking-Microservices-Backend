@@ -4,21 +4,27 @@ import userLoginService from "../services/loginService";
 import refreshService from "../services/refresh";
 import userVerifyEmailService from "../services/emailVerificationService";
 import { publishUserSignup } from "../rabbitMQ/publisher";
+import { updateUserDetailsService } from "../services/updateUserService";
 
 // User signup controller
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { email, password, groupName } = req.body;
+    const { email, password, userType, name, phone } = req.body;
 
-    if (!email || !password) {
+    if (!email || !password || !name) {
       return res.status(400).json({
         status: "FAILED",
         message: "Please complete the required fields.",
       });
     }
 
-    const newUser = await UserSignupService(email, password, groupName);
-
+    const newUser = await UserSignupService(
+      email,
+      password,
+      userType,
+      name,
+      phone
+    );
 
     res.status(201).json({
       status: "SUCCESS",
@@ -44,6 +50,10 @@ export const signup = async (req: Request, res: Response) => {
 // User login controller
 export const login = async (req: Request, res: Response) => {
   try {
+    // Add this debug line
+    console.log("Request body:", req.body);
+    console.log("Request headers:", req.headers);
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -129,8 +139,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
     await userVerifyEmailService(email, code);
     // Publish event to RabbitMQ
     await publishUserSignup({
-      email: email
-      
+      email: email,
     });
     res.status(200).json({
       status: "SUCCESS",
@@ -141,6 +150,25 @@ export const verifyEmail = async (req: Request, res: Response) => {
     res.status(500).json({
       status: "FAILED",
       message: e.message || "Email verification failed.",
+    });
+  }
+};
+
+//Update user's name in cognito
+export const updateUserDetails = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.body;
+    const accessToken = req.headers["authorization"]?.split(" ")[1];
+    await updateUserDetailsService(accessToken, name);
+
+    res.json({
+      status: "SUCCESS",
+      message: "User details updated successfully.",
+    });
+  } catch (error) {
+    res.json({
+      status: "FAILED",
+      message: error.message || "An unexpected error occurred.",
     });
   }
 };

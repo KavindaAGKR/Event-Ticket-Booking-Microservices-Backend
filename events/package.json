@@ -4,19 +4,22 @@
   "description": "event service",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "start": "node dist/index.js",
     "dev": "nodemon index.ts",
-    "build": "tsc",
-    "test": "jest --passWithNoTests",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate deploy",
+    "test": "echo \"No tests yet\" && exit 0",
+    "docker:build": "docker build -t event-service .",
+    "docker:run": "docker run -p 3002:3002 event-service",
     "prisma": "prisma migrate dev --name init && prisma generate",
-    "prisma:reset": "prisma migrate reset && prisma migrate dev --name init && prisma generate"
-
+    "prisma:reset": "prisma migrate reset && prisma migrate dev --name init && prisma generate",
+    "prisma:generate": "npx prisma generate",
+    "prisma:deploy": "npx prisma migrate deploy",
+    "start:prod": "npm run prisma:generate && npm run prisma:deploy && npm start"
   },
   "author": "Kavinda Aludeniya",
   "license": "ISC",
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^24.1.0",
     "nodemon": "^3.1.10",
@@ -27,6 +30,7 @@
   "dependencies": {
     "@prisma/client": "^6.13.0",
     "amqplib": "^0.10.8",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",

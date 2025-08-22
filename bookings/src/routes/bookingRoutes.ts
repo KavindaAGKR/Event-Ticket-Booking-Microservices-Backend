@@ -9,5 +9,7 @@ router.get('/', validateAuth, getAllBookings);
 router.get('/:id', validateAuth, getBookingById);
 router.put('/cancel/:id', validateAuth,  cancelBooking);
 
+router.get("/health", (req, res) => res.status(200).send("OK"));
+
 export default router;
 
