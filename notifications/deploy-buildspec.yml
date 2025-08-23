@@ -3,12 +3,15 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Setting up kubectl...
+      - echo Setting up kubectl and helm...
       - curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
       - chmod +x ./kubectl
       - mv ./kubectl /usr/local/bin/kubectl
+      - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
       - aws eks update-kubeconfig --region ap-southeast-1 --name my-cluster
   build:
     commands:
-      - echo Deploying notifications service to EKS...
-      - kubectl apply -f notifications/notifications-deployment.yaml
+      - echo Deploying notifications service to EKS using Helm...
+      - helm upgrade --install notifications ./notifications/chart \
+          --set image.repository=859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/notifications \
+          --set image.tag=latest

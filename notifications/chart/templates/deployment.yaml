@@ -1,0 +1,5 @@
+spec:
+  containers:
+    - name: notifications
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      ...
