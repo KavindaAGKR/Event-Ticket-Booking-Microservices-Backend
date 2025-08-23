@@ -6,7 +6,7 @@ env:
     AWS_DEFAULT_REGION: ap-southeast-1
     AWS_CLUSTER_NAME: my-cluster
     AWS_ACCOUNT_ID: 859793947578
-    IMAGE_REPO_NAME: notifications
+    IMAGE_REPO_NAME: bookings
     IMAGE_TAG: latest
 
 phases:
@@ -41,4 +41,4 @@ phases:
       - echo Pushing the Docker image...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Deploying to EKS with Helm...
-      - helm upgrade --install notifications ./notifications/chart --set image.repository=$REPOSITORY_URI --set image.tag=$IMAGE_TAG
+      - helm upgrade --install bookings ./bookings/chart --set image.repository=$REPOSITORY_URI --set image.tag=$IMAGE_TAG

@@ -16,3 +16,4 @@ coverage/
 .npm
 .eslintcache
 .aws-sam
+auth-secret.yaml
