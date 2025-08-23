@@ -17,7 +17,7 @@ phases:
       - chmod +x kubectl && mv kubectl /usr/local/bin/
       - echo Installing helm...
       - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-      - kubectl version --short --client
+      - kubectl version --client
       - helm version --short
 
   pre_build:
