@@ -22,9 +22,12 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image tag to artifact...
+      - echo $IMAGE_TAG > imageTag.txt
       - echo Writing image definitions file...
       - printf '[{"name":"notifications","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
   files:
     - imagedefinitions.json
+    - imageTag.txt

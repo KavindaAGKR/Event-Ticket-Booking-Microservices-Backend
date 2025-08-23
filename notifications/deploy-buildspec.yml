@@ -5,11 +5,14 @@ phases:
     commands:
       - echo Setting up kubectl and helm...
       - curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-      - chmod +x ./kubectl
-      - mv ./kubectl /usr/local/bin/kubectl
+      - chmod +x kubectl && mv kubectl /usr/local/bin/
       - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-      - aws eks update-kubeconfig --region ap-southeast-1 --name my-cluster
+      - aws eks update-kubeconfig --region ap-southeast-1 --name ticket-booking-cluster
+      - IMAGE_TAG=$(cat imageTag.txt)  
   build:
     commands:
-      - echo Deploying notifications service to EKS using Helm...
-      - helm upgrade --install notifications ./notifications/chart --set image.repository=859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/notifications --set image.tag=latest
+      - echo Deploying notifications with image tag $IMAGE_TAG
+      - helm upgrade --install notifications ./notifications/chart \
+          --namespace default \
+          --set image.repository=859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/notifications \
+          --set image.tag=$IMAGE_TAG
