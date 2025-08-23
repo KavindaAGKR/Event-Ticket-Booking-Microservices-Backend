@@ -29,5 +29,5 @@ phases:
 
 artifacts:
   files:
-    - notifications/chart/**
-    - notifications/imageTag.txt
+    - chart/**
+    - imageTag.txt
