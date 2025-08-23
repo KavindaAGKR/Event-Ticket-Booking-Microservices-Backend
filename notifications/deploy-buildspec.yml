@@ -1,17 +1,44 @@
 version: 0.2
+run-as: root
+
+env:
+  variables:
+    AWS_DEFAULT_REGION: ap-southeast-1
+    AWS_CLUSTER_NAME: my-cluster
+    AWS_ACCOUNT_ID: 859793947578
+    IMAGE_REPO_NAME: notifications
+    IMAGE_TAG: latest
 
 phases:
-  pre_build:
+  install:
     commands:
-      - echo Setting up kubectl and helm...
+      - echo Installing kubectl...
       - curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
       - chmod +x kubectl && mv kubectl /usr/local/bin/
+      - echo Installing helm...
       - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-      - aws eks update-kubeconfig --region ap-southeast-1 --name my-cluster
-      - IMAGE_TAG=$(aws ecr describe-images --repository-name notifications --region ap-southeast-1 --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[0]' --output text)
+      - kubectl version --short --client
+      - helm version --short
+
+  pre_build:
+    commands:
+      - echo Logging in to Amazon EKS...
+      - aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $AWS_CLUSTER_NAME
+      - kubectl config view --minify
+      - kubectl get svc
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME
+
   build:
     commands:
-      - echo Deploying notifications with image tag $IMAGE_TAG
-      - aws sts get-caller-identity
-      - kubectl get nodes
-      - helm upgrade --install notifications ./notifications/chart --set image.repository=859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/notifications --set image.tag=$IMAGE_TAG
+      - echo Building the Docker image...
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Pushing the Docker image...
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Deploying to EKS with Helm...
+      - helm upgrade --install notifications ./notifications/chart --set image.repository=$REPOSITORY_URI --set image.tag=$IMAGE_TAG
