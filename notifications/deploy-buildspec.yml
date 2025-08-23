@@ -12,6 +12,4 @@ phases:
   build:
     commands:
       - echo Deploying notifications with image tag $IMAGE_TAG
-      - helm upgrade --install notifications ./notifications/chart \
-          --set image.repository=859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/notifications \
-          --set image.tag=$IMAGE_TAG
+      - helm upgrade --install notifications ./notifications/chart --set image.repository=859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/notifications --set image.tag=$IMAGE_TAG
