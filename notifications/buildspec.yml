@@ -29,5 +29,5 @@ phases:
 
 artifacts:
   files:
-    - imagedefinitions.json
-    - imageTag.txt
+    - notifications/chart/**
+    - notifications/imageTag.txt
