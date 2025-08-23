@@ -29,6 +29,5 @@ phases:
 
 artifacts:
   files:
-    - imageTag.txt
     - imagedefinitions.json
   discard-paths: yes
