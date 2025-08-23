@@ -29,4 +29,6 @@ phases:
 
 artifacts:
   files:
-    - notifications/imageTag.txt
+    - imageTag.txt
+    - imagedefinitions.json
+  discard-paths: yes
