@@ -6,3 +6,4 @@ dist
 dist/
 build/
 *.log
+notifications-secret.yaml

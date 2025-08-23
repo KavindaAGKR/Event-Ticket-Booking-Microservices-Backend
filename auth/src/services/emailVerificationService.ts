@@ -1,18 +1,27 @@
 import {
   CognitoIdentityProviderClient,
   ConfirmSignUpCommand,
-} from '@aws-sdk/client-cognito-identity-provider';
-import crypto from 'crypto';
+} from "@aws-sdk/client-cognito-identity-provider";
+import crypto from "crypto";
 
 async function userVerifyEmailService(
   email: string,
-  code: string,
+  code: string
 ): Promise<void> {
-  const client = new CognitoIdentityProviderClient({});
+  const cognitoRegion = process.env.COGNITO_REGION;
+
+  if (!cognitoRegion) {
+    throw new Error("COGNITO_REGION environment variable is not set");
+  }
+
+  const client = new CognitoIdentityProviderClient({
+    region: cognitoRegion,
+  });
+
   const secretHash = crypto
-    .createHmac('SHA256', process.env.COGNITO_APP_CLIENT_SECRET!)
+    .createHmac("SHA256", process.env.COGNITO_APP_CLIENT_SECRET!)
     .update(email + process.env.COGNITO_APP_CLIENT_ID)
-    .digest('base64');
+    .digest("base64");
 
   const command = new ConfirmSignUpCommand({
     ClientId: process.env.COGNITO_APP_CLIENT_ID,
