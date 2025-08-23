@@ -20,16 +20,6 @@ export const createBooking = async (req: Request, res: Response) => {
     // Store response for later
     pendingResponses.set(response.id, res);
 
-    setTimeout(() => {
-      const pendingRes = pendingResponses.get(response.id);
-      if (pendingRes) {
-        pendingRes.status(408).json({
-          status: "FAILED",
-          message: "Payment response timed out",
-        });
-        pendingResponses.delete(response.id);
-      }
-    }, 8000);
     const newBookingData = {
       ...response,
       cardDetails: bookingData.cardDetails,
