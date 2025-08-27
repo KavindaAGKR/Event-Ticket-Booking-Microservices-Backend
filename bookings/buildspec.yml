@@ -8,11 +8,7 @@ env:
 phases:
   install:
     commands:
-      - echo Installing kubectl...
-      - curl -o kubectl https://amazon-eks.s3.ap-southeast-1.amazonaws.com/1.30.0/2024-06-12/bin/linux/amd64/kubectl
-      - chmod +x ./kubectl
-      - mv ./kubectl /usr/local/bin/
-      - kubectl version --client
+      - echo Skipping kubectl installation...
 
   pre_build:
     commands:
@@ -33,11 +29,7 @@ phases:
     commands:
       - echo Pushing the Docker image...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo Updating Kubernetes deployment...
-      - aws eks update-kubeconfig --region ap-southeast-1 --name my-cluster
-      - kubectl set image deployment/bookings-deployment bookings=$REPOSITORY_URI:$IMAGE_TAG -n default
-      - kubectl rollout status deployment/bookings-deployment -n default
 
 artifacts:
   files:
-    - bookings-deployment.yaml
+    - bookings
