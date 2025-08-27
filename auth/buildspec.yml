@@ -7,10 +7,6 @@ env:
     - IMAGE_TAG
 
 phases:
-  install:
-    commands:
-      - echo Skipping kubectl installation...
-
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
