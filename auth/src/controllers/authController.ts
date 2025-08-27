@@ -15,6 +15,7 @@ export const signup = async (req: Request, res: Response) => {
       return res.status(400).json({
         status: "FAILED",
         message: "Please complete the required fields.",
+        error:"Invelid Fields"
       });
     }
 
@@ -65,7 +66,6 @@ export const login = async (req: Request, res: Response) => {
 
     const response = await userLoginService(email, password);
 
-    // Set refresh token as HTTP-only cookie
     res.cookie("refreshToken", response.refreshToken, {
       httpOnly: true,
       sameSite: "none",

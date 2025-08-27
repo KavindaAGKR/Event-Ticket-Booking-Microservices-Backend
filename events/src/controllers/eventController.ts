@@ -17,6 +17,7 @@ export const createEvent = async (req: Request, res: Response) => {
       return res.status(403).json({
         status: "FAILED",
         message: "User is not authorized to create events",
+        error: "Unauthorized"
       });
     }
 
