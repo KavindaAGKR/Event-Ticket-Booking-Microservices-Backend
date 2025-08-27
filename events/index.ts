@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/events", eventRoutes);
 
 const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on the port ${PORT}`));
 
 startPaymentResultSubscriber();
 startBookingCancelledSubscriber();

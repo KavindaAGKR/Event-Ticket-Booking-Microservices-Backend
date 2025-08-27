@@ -19,6 +19,6 @@ app.get("/health", (req, res) => res.status(200).send("OK"));
 
 app.listen(process.env.PORT || 3003, () => {
   console.log(
-    `Notifications service is listening on the port ${process.env.PORT || 3003}`
+    `Notifications service is listening on port ${process.env.PORT || 3003}`
   );
 });
