@@ -27,9 +27,10 @@ phases:
 
   post_build:
     commands:
-      - sed -i "s|\$IMAGE_TAG|${IMAGE_TAG}|g" bookings/bookings-deployment.yaml
+      - echo Pushing the Docker image...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-
+      - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:latest
 
 artifacts:
   files:
