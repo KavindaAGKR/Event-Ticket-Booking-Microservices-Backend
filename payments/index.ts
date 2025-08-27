@@ -28,6 +28,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/payments", paymentRoutes);
 
 app.listen(3004, () => {
-  console.log("Payment service listening on port 3004");
+  console.log("Payment service is listening on port 3004");
   startBookingCreatedSubscriber().catch(console.error);
 });
