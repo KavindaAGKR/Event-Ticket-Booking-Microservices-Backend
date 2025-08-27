@@ -31,7 +31,9 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:latest
+      - echo "IMAGE_TAG=$IMAGE_TAG" > imageTag.txt
 
 artifacts:
   files:
     - bookings/bookings-deployment.yaml
+    - imageTag.txt
