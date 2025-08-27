@@ -4,6 +4,8 @@ env:
   variables:
     ECR_REPO: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/bookings
     IMAGE_TAG: $CODEBUILD_RESOLVED_SOURCE_VERSION
+  exported-variables:
+    - IMAGE_TAG
 
 phases:
   install:
