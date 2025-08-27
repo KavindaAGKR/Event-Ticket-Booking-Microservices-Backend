@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: payments
-          image: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/payments:$IMAGE_TAG
+          image: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/payments:IMAGE_TAG
           ports:
             - containerPort: 3004
           envFrom:
