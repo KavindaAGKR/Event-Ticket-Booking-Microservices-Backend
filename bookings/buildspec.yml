@@ -23,7 +23,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG -f bookings/Dockerfile bookings
 
   post_build:
     commands:
@@ -32,4 +32,4 @@ phases:
 
 artifacts:
   files:
-    - bookings
+    - bookings/bookings-deployment.yaml
