@@ -1,9 +1,9 @@
 import express from "express";
 import eventRoutes from "./src/routes/eventRoutes";
 import dotenv from "dotenv";
-import { startPaymentResultSubscriber } from "./src/rabbitMQ/paymentResultSubscriber";
 import cors from "cors";
-import { startBookingCancelledSubscriber } from "./src/rabbitMQ/bookingCancelSubscriber";
+import { startPaymentResultSubscriber } from "./src/rabbitmq/paymentResultSubscriber";
+import { startBookingCancelledSubscriber } from "./src/rabbitmq/bookingCancelSubscriber";
 
 dotenv.config();
 
