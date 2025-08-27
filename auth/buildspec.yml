@@ -1,37 +1,40 @@
 version: 0.2
 
+env:
+  variables:
+    ECR_REPO: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/auth
+    IMAGE_TAG: $CODEBUILD_RESOLVED_SOURCE_VERSION
+  exported-variables:
+    - IMAGE_TAG
+
 phases:
   install:
     commands:
-      - echo Installing kubectl...
-      - curl -o kubectl https://amazon-eks.s3.ap-southeast-1.amazonaws.com/1.30.0/2024-06-12/bin/linux/amd64/kubectl
-      - chmod +x ./kubectl
-      - mv ./kubectl /usr/local/bin/
-      - kubectl version --client
+      - echo Skipping kubectl installation...
 
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com
-      - REPOSITORY_URI=859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/auth
+      - aws --version
+      - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin $ECR_REPO
+      - REPOSITORY_URI=$ECR_REPO
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${COMMIT_HASH:=latest} Tag
+      - IMAGE_TAG=${COMMIT_HASH}
 
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest -f Dockerfile .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG -f auth/Dockerfile auth
 
   post_build:
     commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
+      - echo Pushing the Docker image...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo Updating kubeconfig...
-      - aws eks update-kubeconfig --region ap-southeast-1 --name my-eks-cluster
-      - echo "Updating Kubernetes deployment with new image..."
-      - kubectl set image deployment/auth auth=$REPOSITORY_URI:$IMAGE_TAG
-      - kubectl rollout status deployment/auth
+      - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
+      - echo "IMAGE_TAG=$IMAGE_TAG" > imageTag.txt
+
+artifacts:
+  files:
+    - auth/auth-deployment.yaml
+    - imageTag.txt

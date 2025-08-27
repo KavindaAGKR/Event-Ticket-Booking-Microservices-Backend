@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/auth:latest
+          image: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/auth:IMAGE_TAG
           ports:
             - containerPort: 3000
           envFrom:
