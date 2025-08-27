@@ -8,8 +8,8 @@ export async function handleManualPayment(req: Request, res: Response) {
     booking .customerId = customerId;
     console.log("Received booking data:", booking);
     await processPayment(booking);
-    res.status(200).json({ message: "Payment processed successfully." });
+    res.status(200).json({status:"SUCCESS", message: "Payment processed successfully." });
   } catch (err) {
-    res.status(400).json({ error: "Payment failed." + err.message });
+    res.status(400).json({ status: "FAILED", message: "Payment failed." + err.message });
   }
 }

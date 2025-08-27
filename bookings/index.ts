@@ -28,6 +28,6 @@ app.use(express.json());
 app.use("/bookings", bookingRoutes);
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on the port ${PORT}`));
 
 startPaymentResultSubscriber();
