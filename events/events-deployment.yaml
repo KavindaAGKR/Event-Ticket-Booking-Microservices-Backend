@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: events
-          image: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/events:latest
+          image: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/events:$IMAGE_TAG
           ports:
             - containerPort: 3002
           envFrom:

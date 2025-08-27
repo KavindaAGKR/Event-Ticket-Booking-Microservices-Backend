@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: notifications
-          image: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/notifications:latest
+          image: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/notifications:$IMAGE_TAG
           ports:
             - containerPort: 3003
           envFrom:
