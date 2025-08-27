@@ -43,7 +43,7 @@ export const getAllEvents = async (req: Request, res: Response) => {
     const events = await getAllEventsService();
     res.status(200).json({
       status: "SUCCESS",
-      message: "Events retrieved successfully",
+      message: "Events data retrieved successfully",
       data: events,
     });
   } catch (err: any) {
