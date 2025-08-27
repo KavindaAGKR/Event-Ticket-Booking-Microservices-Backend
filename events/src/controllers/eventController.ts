@@ -7,7 +7,8 @@ import {
   getEventByIdService,
   updateEventService,
 } from "../services/eventServices";
-import { publishEventCreated } from "../rabbitMQ/publisher";
+import { publishEventCreated } from "../rabbitmq/publisher";
+
 
 //Create an event
 export const createEvent = async (req: Request, res: Response) => {
