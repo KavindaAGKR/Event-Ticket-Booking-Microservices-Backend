@@ -31,6 +31,7 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:latest
+      - sed -i "s|\$IMAGE_TAG|${IMAGE_TAG}|g" bookings/bookings-deployment.yaml
 
 artifacts:
   files:

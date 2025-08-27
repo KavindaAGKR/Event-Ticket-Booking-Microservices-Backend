@@ -42,10 +42,9 @@ export const getAllBookings = async (req: Request, res: Response) => {
     const bookings = await getAllBookingsService(userName);
     res.status(200).json({
       status: "SUCCESS",
-      message: "Bookings retrieved successfully latest bookings",
+      message: "Bookings retrieved successfully latest",
       data: bookings,
-      note: "This is commited newly to identify bookings deployed"
-    });
+         });
   } catch (err) {
     res.status(500).json({ status: "FAILED", message: err.message });
   }
