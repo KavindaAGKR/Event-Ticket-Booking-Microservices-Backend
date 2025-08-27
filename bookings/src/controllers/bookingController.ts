@@ -44,6 +44,7 @@ export const getAllBookings = async (req: Request, res: Response) => {
       status: "SUCCESS",
       message: "Bookings retrieved successfully",
       data: bookings,
+      note: "This is commited newly to identify bookings deployed"
     });
   } catch (err) {
     res.status(500).json({ status: "FAILED", message: err.message });
@@ -63,7 +64,8 @@ export const getBookingById = async (req: Request, res: Response) => {
     res.status(200).json({
       status: "SUCCESS",
       message: "Booking retrieved successfully",
-      data: booking,
+      data: booking
+      
     });
   } catch (err) {
     res.status(500).json({ status: "FAILED", message: err.message });
