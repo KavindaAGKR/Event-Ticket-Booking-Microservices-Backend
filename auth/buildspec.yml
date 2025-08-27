@@ -3,7 +3,6 @@ version: 0.2
 env:
   variables:
     ECR_REPO: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/auth
-    IMAGE_TAG: $CODEBUILD_RESOLVED_SOURCE_VERSION
   exported-variables:
     - IMAGE_TAG
 
@@ -17,6 +16,8 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin $ECR_REPO
+      - export IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - echo "IMAGE_TAG=$IMAGE_TAG"
 
   build:
     commands:
@@ -29,7 +30,6 @@ phases:
       - echo Pushing the Docker image...
       - docker push $ECR_REPO:$IMAGE_TAG
       - docker tag $ECR_REPO:$IMAGE_TAG $ECR_REPO:latest
-      - docker push $ECR_REPO:latest
       - echo "IMAGE_TAG=$IMAGE_TAG" > imageTag.txt
       - sed -i "s|IMAGE_TAG|${IMAGE_TAG}|g" auth/auth-deployment.yaml
 
