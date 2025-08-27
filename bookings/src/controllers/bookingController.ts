@@ -47,7 +47,7 @@ export const getAllBookings = async (req: Request, res: Response) => {
       
     });
   } catch (err) {
-    res.status(500).json({ status: "FAILED", message: err.message, error:"error occured" });
+    res.status(500).json({ status: "FAILED", message: err.message });
   }
 };
 
