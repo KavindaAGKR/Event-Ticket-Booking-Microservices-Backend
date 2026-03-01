@@ -1,8 +1,0 @@
-BuildMethod: esbuild
-BuildProperties:
-  Minify: true
-  Target: "es2020"
-  Sourcemap: false
-  External:
-    - "@aws-sdk/*"
-    - "@smithy/*"

@@ -43,16 +43,16 @@ export function paymentResultTemplate(paymentData: any) {
             ? `<div style="text-align:center; margin-top:24px;">
                 <span style="font-size:2em; color:#2ecc40;">🎟️</span>
                 <p style="color:#333; font-size:1.1em;">Your tickets are confirmed and will be sent to <strong>${booking.customerEmail}</strong> soon.</p>
-                <p style="color:#888; font-size:0.95em; margin-top:16px;">Need help? <a href="mailto:support@yourdomain.com" style="color:#2d7ff9;">Contact Support</a></p>
+                <p style="color:#888; font-size:0.95em; margin-top:16px;">Need help? <a href="mailto:support@myevents.lk" style="color:#2d7ff9;">Contact Support</a></p>
              </div>`
             : `<div style="text-align:center; margin-top:24px;">
                 <span style="font-size:2em; color:#e74c3c;">💳</span>
                 <p style="color:#333; font-size:1.1em;">Please try again or use a different payment method.</p>
-                <p style="color:#888; font-size:0.95em; margin-top:16px;">Need help? <a href="mailto:support@yourdomain.com" style="color:#2d7ff9;">Contact Support</a></p>
+                <p style="color:#888; font-size:0.95em; margin-top:16px;">Need help? <a href="mailto:support@myevents.lk" style="color:#2d7ff9;">Contact Support</a></p>
              </div>`
         }
         <div style="margin-top:32px; text-align:center; color:#aaa; font-size:0.9em;">
-          &copy; ${new Date().getFullYear()} Event Ticket Booking. All rights reserved.
+          &copy; ${new Date().getFullYear()} myEvents.lk. All rights reserved. | Sri Lanka's Premier Event Platform
         </div>
       </div>
     `,

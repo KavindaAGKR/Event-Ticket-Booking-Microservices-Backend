@@ -1,0 +1,4 @@
+image:
+  repository: 859793947578.dkr.ecr.ap-southeast-1.amazonaws.com/notifications
+  tag: latest
+  pullPolicy: IfNotPresent

@@ -1,0 +1,50 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: microservices-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-1:859793947578:certificate/1d27f0f0-8fbb-49f6-acf4-4319ecd31f73
+spec:
+  ingressClassName: alb
+  rules:
+    - host: cloud-api.cisk.site
+      http:
+        paths:
+          - path: /payments
+            pathType: Prefix
+            backend:
+              service:
+                name: payments
+                port:
+                  number: 3004
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth
+                port:
+                  number: 3000
+          - path: /bookings
+            pathType: Prefix
+            backend:
+              service:
+                name: bookings
+                port:
+                  number: 3001
+          - path: /events
+            pathType: Prefix
+            backend:
+              service:
+                name: events
+                port:
+                  number: 3002
+          - path: /notifications
+            pathType: Prefix
+            backend:
+              service:
+                name: notifications
+                port:
+                  number: 3003

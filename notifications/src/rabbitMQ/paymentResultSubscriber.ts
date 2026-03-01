@@ -32,20 +32,3 @@ export async function startPaymentResultSubscriber() {
   );
 }
 
-// export async function subscribePaymentResult(
-//   queueName: string,
-//   onMessage: (msg: any) => void
-// ) {
-//   const { channel } = await getRabbitMQChannel();
-//   const exchangeName = "payment_result_exchange";
-//   await channel.assertExchange(exchangeName, "fanout", { durable: true });
-//   await channel.assertQueue(queueName, { durable: true });
-//   await channel.bindQueue(queueName, exchangeName, "");
-//   channel.consume(queueName, (msg) => {
-//     if (msg) {
-//       const result = JSON.parse(msg.content.toString());
-//       onMessage(result);
-//       channel.ack(msg);
-//     }
-//   });
-// }
